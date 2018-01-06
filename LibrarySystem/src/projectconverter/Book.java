@@ -18,14 +18,13 @@ public class Book {
     
     public String addBook(String name,String description,String authName, String genre, int availability) throws ClassNotFoundException, SQLException
     {
-    String msg="";
+    String msg="-1";
     String sql = "INSERT INTO book(name,description,authName,genre,availability) "
             + "VALUES('"+name+"','"+description+"','"+authName+"','"+genre+"'," +availability+")";
     try{
     DatabaseCon con = new DatabaseCon();
-    con.insert(sql);
+    msg=con.insert(sql);
     }
-    
     
     catch(SQLException e){
         msg = "failed to add book!";
@@ -34,6 +33,8 @@ public class Book {
         
         msg = e.toString();
     }
+    finally{
     return msg;
+    }
     }
 }
