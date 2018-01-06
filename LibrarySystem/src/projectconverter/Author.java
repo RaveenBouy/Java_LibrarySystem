@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class Author implements Person,Manage {
 
-    String execmsg="-1";
+    String execmsg="Unsuccessful!";
     @Override
     public String addPerson(String title, String name, String nationality, String city, String country, String contact) {
        
@@ -23,6 +23,7 @@ public class Author implements Person,Manage {
          try{
     DatabaseCon con = new DatabaseCon();
     execmsg=con.insert(sql);
+    execmsg="Successful!";
     }
     
     catch(SQLException e){
