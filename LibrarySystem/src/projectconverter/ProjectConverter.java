@@ -18,10 +18,7 @@ public class ProjectConverter extends JFrame
 {
 public JFrame frame;
 public JPanel firstPanel, secondPanel, thirdPanel, backPanel;
-private JButton calculateBtn, algebraBtn, geometryBtn, unitConBtn, engBtn, 
-                algebraAverageBtn, algebraDTFBtn,
-                engineeringOLBtn, engineeringSDTBtn, geometryAreaBtn, geometryVolumeBtn, 
-                UCDigitalStorageBtn, UCTemperatureBtn, testB;
+private JButton book,member,borrowReturn,author,addBook,viewBook, addMember, viewMember, addAuthor, viewAuthor;
 
 public JSeparator s1, s2;
 final int heightx =40;
@@ -58,43 +55,41 @@ final int heightx =40;
           backPanel.add(firstPanel);
           
           //Creating Button Objects
-          calculateBtn = new JButton("Calculator");
-          algebraBtn = new JButton("Algebra");
-          geometryBtn = new JButton("Geometry");
-          unitConBtn = new JButton("Unit Converter");
-          engBtn = new JButton("Engineering");     
+          //calculateBtn = new JButton("Calculator");
+          book = new JButton("Books");
+          member = new JButton("Members");
+          borrowReturn = new JButton("Borrow/Return");
+          author = new JButton("Authors");     
           
           //Adding ActionCommands to buttons
-          calculateBtn.setActionCommand("calculate");
-          algebraBtn.setActionCommand("algebra");
-          geometryBtn.setActionCommand("geometry");
-          unitConBtn.setActionCommand("unitConverter");
-          engBtn.setActionCommand("engineering");
+          //calculateBtn.setActionCommand("calculate");
+          book.setActionCommand("book");
+          member.setActionCommand("member");
+          borrowReturn.setActionCommand("borrowReturn");
+          author.setActionCommand("author");
           
           //Adding ActionListeners to buttons
-          calculateBtn.addActionListener(new ButtonEventHandler());
-          algebraBtn.addActionListener(new ButtonEventHandler());
-          geometryBtn.addActionListener(new ButtonEventHandler());
-          unitConBtn.addActionListener(new ButtonEventHandler());
-          engBtn.addActionListener(new ButtonEventHandler());
+          //calculateBtn.addActionListener(new ButtonEventHandler());
+          book.addActionListener(new ButtonEventHandler());
+          member.addActionListener(new ButtonEventHandler());
+          borrowReturn.addActionListener(new ButtonEventHandler());
+          author.addActionListener(new ButtonEventHandler());
                     
           //Add colors to panels ---Test
           //secondPanel.setBackground(Color.green);
           thirdPanel.setBackground(Color.blue);
                   
           //adding buttons to firstPanel
-          firstPanel.add(calculateBtn);         
-          firstPanel.add(algebraBtn);
-          firstPanel.add(geometryBtn);
-          firstPanel.add(unitConBtn);
-          firstPanel.add(engBtn);
+          firstPanel.add(book);         
+          firstPanel.add(member);
+          firstPanel.add(borrowReturn);
+          firstPanel.add(author);
                   
           //setting location & size to buttons       
-          calculateBtn.setBounds(0, 8, 103,heightx );
-          algebraBtn.setBounds(0, 56, 103,heightx );
-          geometryBtn.setBounds(0, 104, 103, heightx);
-          unitConBtn.setBounds(0, 152, 103,heightx );
-          engBtn.setBounds(0, 200, 103,heightx );
+          book.setBounds(0, 8, 103,heightx );
+          member.setBounds(0, 56, 103,heightx );
+          borrowReturn.setBounds(0, 104, 103, heightx);
+          author.setBounds(0, 152, 103,heightx );
           
     
           frame.add(backPanel);
@@ -115,33 +110,16 @@ final int heightx =40;
        String command = e.getActionCommand();
        //secondPanel.setBackground(Color.green);
        //thirdPanel.setBackground(Color.blue);
-       if(command.equals("calculate"))
-       {   
-           secondPanel.setVisible(false);
-           thirdPanel.setVisible(true);
-           thirdPanel.removeAll();
-           thirdPanel.revalidate();
-           thirdPanel.repaint();
-           thirdPanel.setLayout(null);
-           frame.setSize(370,300);
-           thirdPanel.setSize(218,247);
-           thirdPanel.setLocation(125, 6);
-           backPanel.add(thirdPanel);
-           backPanel.revalidate();
-           backPanel.repaint();
-           System.out.println("calc"); 
-        }
-       else
-       if(command.equals("algebra"))
+       if(command.equals("book"))
        {   
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);          
-           algebraAverageBtn = new JButton("Average");
-           algebraDTFBtn     = new JButton("Decimal to Fration");
-           algebraAverageBtn.setActionCommand("aAverage");
-           algebraDTFBtn.setActionCommand("aDTF");
-           algebraAverageBtn.addActionListener(new ButtonEventHandler());
-           algebraDTFBtn.addActionListener(new ButtonEventHandler());
+           addBook = new JButton("Add Book");
+           viewBook = new JButton("View Book");
+           addBook.setActionCommand("addBook");
+           viewBook.setActionCommand("viewBook");
+           addBook.addActionListener(new ButtonEventHandler());
+           viewBook.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
@@ -149,26 +127,26 @@ final int heightx =40;
            frame.setSize(303,300); 
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
-           algebraAverageBtn.setBounds(0,40,155,heightx);  
-           algebraDTFBtn.setBounds(0,98,155,heightx); 
-           secondPanel.add(algebraAverageBtn);
-           secondPanel.add(algebraDTFBtn);
+           addBook.setBounds(0,40,155,heightx);  
+           viewBook.setBounds(0,98,155,heightx); 
+           secondPanel.add(addBook);
+           secondPanel.add(viewBook);
            backPanel.add(secondPanel);
            backPanel.revalidate();
            backPanel.repaint();           
-           System.out.println("algb");
+           System.out.println("Books");
        }
        else
-       if(command.equals("geometry"))
+       if(command.equals("member"))
        {
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);  
-           geometryAreaBtn   = new JButton("Area");
-           geometryVolumeBtn = new JButton("Volume");
-           geometryAreaBtn.setActionCommand("gArea");
-           geometryVolumeBtn.setActionCommand("gVolume");
-           geometryAreaBtn.addActionListener(new ButtonEventHandler());
-           geometryVolumeBtn.addActionListener(new ButtonEventHandler());
+           addMember   = new JButton("Add Member");
+           viewMember = new JButton("View Member");
+           addMember.setActionCommand("addMember");
+           viewMember.setActionCommand("viewMember");
+           addMember.addActionListener(new ButtonEventHandler());
+           viewMember.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
@@ -176,9 +154,9 @@ final int heightx =40;
            frame.setSize(303,300); 
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
-           geometryAreaBtn.setBounds(0,40,155,heightx);  
-           geometryVolumeBtn.setBounds(0,98,155,heightx); 
-           secondPanel.add(geometryAreaBtn);
+           addMember.setBounds(0,40,155,heightx);  
+           viewMember.setBounds(0,98,155,heightx); 
+           secondPanel.add(addMember);
            secondPanel.add(geometryVolumeBtn);
            backPanel.add(secondPanel);
            backPanel.revalidate();
