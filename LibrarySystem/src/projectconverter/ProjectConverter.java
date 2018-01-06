@@ -116,10 +116,10 @@ final int heightx =40;
            thirdPanel.setVisible(false);          
            addBook = new JButton("Add Book");
            viewBook = new JButton("View Book");
-           algebraAverageBtn.setActionCommand("aAverage");
-           algebraDTFBtn.setActionCommand("aDTF");
-           algebraAverageBtn.addActionListener(new ButtonEventHandler());
-           algebraDTFBtn.addActionListener(new ButtonEventHandler());
+           addBook.setActionCommand("addBook");
+           viewBook.setActionCommand("viewBook");
+           addBook.addActionListener(new ButtonEventHandler());
+           viewBook.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
@@ -127,26 +127,26 @@ final int heightx =40;
            frame.setSize(303,300); 
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
-           algebraAverageBtn.setBounds(0,40,155,heightx);  
-           algebraDTFBtn.setBounds(0,98,155,heightx); 
-           secondPanel.add(algebraAverageBtn);
-           secondPanel.add(algebraDTFBtn);
+           addBook.setBounds(0,40,155,heightx);  
+           viewBook.setBounds(0,98,155,heightx); 
+           secondPanel.add(addBook);
+           secondPanel.add(viewBook);
            backPanel.add(secondPanel);
            backPanel.revalidate();
            backPanel.repaint();           
-           System.out.println("algb");
+           System.out.println("Books");
        }
        else
-       if(command.equals("geometry"))
+       if(command.equals("member"))
        {
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);  
-           geometryAreaBtn   = new JButton("Area");
-           geometryVolumeBtn = new JButton("Volume");
-           geometryAreaBtn.setActionCommand("gArea");
-           geometryVolumeBtn.setActionCommand("gVolume");
-           geometryAreaBtn.addActionListener(new ButtonEventHandler());
-           geometryVolumeBtn.addActionListener(new ButtonEventHandler());
+           addMember   = new JButton("Add Member");
+           viewMember = new JButton("View Member");
+           addMember.setActionCommand("addMember");
+           viewMember.setActionCommand("viewMember");
+           addMember.addActionListener(new ButtonEventHandler());
+           viewMember.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
