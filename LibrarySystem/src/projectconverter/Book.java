@@ -25,8 +25,10 @@ public class Book {
     DatabaseCon con = new DatabaseCon();
     con.insert(sql);
     }
+    
+    
     catch(SQLException e){
-        msg = e.getMessage();
+        msg = "failed to add book!";
     }
     catch(Exception e){
         
