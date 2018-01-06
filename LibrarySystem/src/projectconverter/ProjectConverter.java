@@ -18,10 +18,7 @@ public class ProjectConverter extends JFrame
 {
 public JFrame frame;
 public JPanel firstPanel, secondPanel, thirdPanel, backPanel;
-private JButton calculateBtn, algebraBtn, geometryBtn, unitConBtn, engBtn, 
-                algebraAverageBtn, algebraDTFBtn,
-                engineeringOLBtn, engineeringSDTBtn, geometryAreaBtn, geometryVolumeBtn, 
-                UCDigitalStorageBtn, UCTemperatureBtn, testB;
+private JButton book,member,borrow,addBook,viewBook, addMember, viewMember, addAuthor, viewAuthor;
 
 public JSeparator s1, s2;
 final int heightx =40;
@@ -58,21 +55,21 @@ final int heightx =40;
           backPanel.add(firstPanel);
           
           //Creating Button Objects
-          calculateBtn = new JButton("Calculator");
-          algebraBtn = new JButton("Algebra");
-          geometryBtn = new JButton("Geometry");
+          //calculateBtn = new JButton("Calculator");
+          book = new JButton("Books");
+          member = new JButton("Members");
           unitConBtn = new JButton("Unit Converter");
           engBtn = new JButton("Engineering");     
           
           //Adding ActionCommands to buttons
-          calculateBtn.setActionCommand("calculate");
+          //calculateBtn.setActionCommand("calculate");
           algebraBtn.setActionCommand("algebra");
           geometryBtn.setActionCommand("geometry");
           unitConBtn.setActionCommand("unitConverter");
           engBtn.setActionCommand("engineering");
           
           //Adding ActionListeners to buttons
-          calculateBtn.addActionListener(new ButtonEventHandler());
+          //calculateBtn.addActionListener(new ButtonEventHandler());
           algebraBtn.addActionListener(new ButtonEventHandler());
           geometryBtn.addActionListener(new ButtonEventHandler());
           unitConBtn.addActionListener(new ButtonEventHandler());
