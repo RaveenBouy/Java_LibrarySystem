@@ -13,8 +13,9 @@ import java.sql.SQLException;
  */
 public class Prog {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Book b1 = new Book();
-        System.out.println(b1.addBook("ad", "ad", "ad", "ad", 1));
-        
+        //Book b1 = new Book();
+        //System.out.println(b1.addBook("ad", "ad", "ad", "ad", 1));
+        Author a1 = new Author();
+        System.out.println(a1.addPerson("mr","chanaka","sri lankan","ganemulla","sri lanka","0778328332"));
     }
 }

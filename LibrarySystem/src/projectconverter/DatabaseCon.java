@@ -21,7 +21,7 @@ public class DatabaseCon {
     public String insert(String sql) throws ClassNotFoundException, SQLException
     {
     Class.forName("com.mysql.jdbc.Driver");
-    java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarydb","root","1234");
+    java.sql.Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarydb","root","");
     java.sql.Statement stmt = conn.createStatement();
     String status = Integer.toString(stmt.executeUpdate(sql));
     conn.close();
