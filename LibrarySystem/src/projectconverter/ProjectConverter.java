@@ -18,7 +18,7 @@ public class ProjectConverter extends JFrame
 {
 public JFrame frame;
 public JPanel firstPanel, secondPanel, thirdPanel, backPanel;
-private JButton book,member,borrowReturn,author,addBook,viewBook, addMember, viewMember, addAuthor, viewAuthor;
+private JButton book,member,borrowReturn,author,addBook,viewBook,borrowBook,returnBook, addMember, viewMember, addAuthor, viewAuthor;
 
 public JSeparator s1, s2;
 final int heightx =40;
@@ -157,23 +157,23 @@ final int heightx =40;
            addMember.setBounds(0,40,155,heightx);  
            viewMember.setBounds(0,98,155,heightx); 
            secondPanel.add(addMember);
-           secondPanel.add(geometryVolumeBtn);
+           secondPanel.add(viewMember);
            backPanel.add(secondPanel);
            backPanel.revalidate();
            backPanel.repaint();      
-           System.out.println("geo");
+           System.out.println("member");
        }
        else
-       if(command.equals("unitConverter"))
+       if(command.equals("borrowReturn"))
        {   
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);  
-           UCDigitalStorageBtn = new JButton("Digital Storage");
-           UCTemperatureBtn    = new JButton("Temperature");
-           UCDigitalStorageBtn.setActionCommand("uDS");
-           UCTemperatureBtn.setActionCommand("uTemperature");
-           UCDigitalStorageBtn.addActionListener(new ButtonEventHandler());
-           UCTemperatureBtn.addActionListener(new ButtonEventHandler());
+           borrowBook = new JButton("Borrow Book");
+           returnBook    = new JButton("Return Book");
+           borrowBook.setActionCommand("borrowBook");
+           returnBook.setActionCommand("returnBook");
+           borrowBook.addActionListener(new ButtonEventHandler());
+           returnBook.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
@@ -181,26 +181,26 @@ final int heightx =40;
            frame.setSize(303,300);
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
-           UCDigitalStorageBtn.setBounds(0,40,155,heightx);  
-           UCTemperatureBtn.setBounds(0,98,155,heightx);
-           secondPanel.add(UCDigitalStorageBtn);
-           secondPanel.add(UCTemperatureBtn);
+           borrowBook.setBounds(0,40,155,heightx);  
+           returnBook.setBounds(0,98,155,heightx);
+           secondPanel.add(borrowBook);
+           secondPanel.add(returnBook);
            backPanel.add(secondPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("unit");
+           System.out.println("borrowReturn");
        }
        else
-       if(command.equals("engineering"))
+       if(command.equals("author"))
        {
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);  
-           engineeringOLBtn  = new JButton("Ohm's Law");
-           engineeringSDTBtn = new JButton("Speed/Distance/Time");
-           engineeringOLBtn.setActionCommand("eOL");
-           engineeringSDTBtn.setActionCommand("eSDT");
-           engineeringOLBtn.addActionListener(new ButtonEventHandler());
-           engineeringSDTBtn.addActionListener(new ButtonEventHandler());
+           addAuthor  = new JButton("Add Author");
+           viewAuthor = new JButton("View Author");
+           addAuthor.setActionCommand("addAuthor");
+           viewAuthor.setActionCommand("viewAuthor");
+           addAuthor.addActionListener(new ButtonEventHandler());
+           viewAuthor.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
            secondPanel.repaint();
@@ -208,37 +208,37 @@ final int heightx =40;
            secondPanel.setLayout(null);
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
-           engineeringOLBtn.setBounds(0,40,155,heightx); 
-           engineeringSDTBtn.setBounds(0,98,155,heightx);
-           secondPanel.add(engineeringOLBtn);
-           secondPanel.add(engineeringSDTBtn);
+           addAuthor.setBounds(0,40,155,heightx); 
+           viewAuthor.setBounds(0,98,155,heightx);
+           secondPanel.add(addAuthor);
+           secondPanel.add(viewAuthor);
            backPanel.add(secondPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("eng");
+           System.out.println("author");
        }
        else                            //Adding Listeners to the second Panel **All the windows for the 2nd panel**
-       if(command.equals("aAverage"))
+       if(command.equals("addBook"))
        {
            new DynamicPanels().aAverage();          
        }
        else
-       if(command.equals("aDTF"))
+       if(command.equals("viewBook"))
        {
            new DynamicPanels().aDTF();
        }
        else
-       if(command.equals("gArea"))
+       if(command.equals("addMember"))
        {
            new DynamicPanels().gArea();
        }
        else
-       if(command.equals("gVolume"))
+       if(command.equals("viewMember"))
        {
            new DynamicPanels().gVolume();
        }
        else
-       if(command.equals("uDS"))
+       if(command.equals("borrow"))
        {
            new DynamicPanels().uDS();
        }
@@ -274,10 +274,10 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
-           testB = new JButton("WATTTTTTTT");
-           thirdPanel.setLayout(null);
-           thirdPanel.add(testB);
-           testB.setBounds(0,98,185,heightx);                      
+//           testB = new JButton("WATTTTTTTT");
+//           thirdPanel.setLayout(null);
+//           thirdPanel.add(testB);
+//           testB.setBounds(0,98,185,heightx);                      
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
