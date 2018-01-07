@@ -8,6 +8,9 @@ package projectconverter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -532,16 +535,28 @@ final int heightx =40;
     private class ButtonEventHandler implements ActionListener
     {   
     public void actionPerformed(ActionEvent e)
+            
     {
        String command = e.getActionCommand();
        //secondPanel.setBackground(Color.green);
        //thirdPanel.setBackground(Color.blue);
        if(command.equals("addBookSubmit"))
        {  
-                             
-           
-           
-           System.out.println(namet.getText());      
+        Book b1 = new Book();
+        b1.setAuthName(authort.getText());
+        b1.setName(namet.getText());
+        b1.setGenre(genret.getText());
+        b1.setDescription(descriptiont.getText());
+        b1.setAvailability(Integer.parseInt(availabilityt.getText())); 
+        
+           try {
+               b1.addBook();
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           System.out.println("addbook");
        }
     }
    }
