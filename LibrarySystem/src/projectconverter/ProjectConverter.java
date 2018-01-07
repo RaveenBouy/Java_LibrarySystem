@@ -8,10 +8,13 @@ package projectconverter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -237,7 +240,11 @@ final int heightx =40;
        else
        if(command.equals("viewBook"))
        {
-           new DynamicPanels().bookView();
+           try {
+               new DynamicPanels().bookView();
+           } catch (ClassNotFoundException | SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
        if(command.equals("addMember"))
@@ -283,6 +290,7 @@ final int heightx =40;
         JTextField titlema,namema,nationalityma,cityma,countryma,contactma; //member, author
         JTextArea descriptiont;
         JComboBox titleMa;
+        JList list;
         public void bookAdd()
         {     
            //Preparing the 3rd Panel            
@@ -345,7 +353,7 @@ final int heightx =40;
            
         }
         
-        public void bookView()
+        public void bookView() throws ClassNotFoundException, SQLException
         {
            //Preparing the 3rd Panel 
            thirdPanel.removeAll();
@@ -358,10 +366,19 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
-           JList books = new JList();
-           books.setBounds(0, 0, 200, 200);
+           
+           DefaultListModel lm = new DefaultListModel();
+           list = new JList(lm);
+           list.addListSelectionListener(new ButtonEventHandler());
+           list.setBounds(0, 0, 130,247);   
            thirdPanel.setLayout(null);
-           thirdPanel.add(books);
+           
+           ResultSet books = Book.getBooks();
+           while(books.next())
+           {
+              lm.addElement(books.getString(1));
+           }
+           thirdPanel.add(list);
            
            
            //preparing the 3rd Panel
@@ -616,10 +633,9 @@ final int heightx =40;
            System.out.println("viewAuthor");             
         }
         
-    private class ButtonEventHandler implements ActionListener
+    private class ButtonEventHandler implements ActionListener, ListSelectionListener 
     {   
-    public void actionPerformed(ActionEvent e)
-            
+    public void actionPerformed(ActionEvent e)            
     {
        String command = e.getActionCommand();
        //secondPanel.setBackground(Color.green);
@@ -712,7 +728,17 @@ final int heightx =40;
        {  
        
        }
-    }
+    }    
+        @Override
+        public void valueChanged(ListSelectionEvent e) 
+        {
+            if(e.getSource() == list)
+                {
+                   System.out.println(list.getSelectedValue()); 
+                }
+             
+            
+        }
    }
   }
 }
