@@ -291,22 +291,26 @@ final int heightx =40;
            JLabel genrel = new JLabel("Genre");
            JLabel descriptionl = new JLabel("Description");
            JLabel authorl = new JLabel("Author");
+           JLabel availabilityl = new JLabel("Availability");
            JButton submit = new JButton("Submit");
            
            JTextField namet = new JTextField();
            JTextField genret = new JTextField();
            JTextArea descriptiont = new JTextArea();
            JTextField authort = new JTextField();
+           JTextField availabilityt = new JTextField();
                     
-           namel.setBounds(0, 0, 100, 20);
-           namet.setBounds(0, 20, 150, 20);
-           genrel.setBounds(0, 40, 100, 20);
-           genret.setBounds(0, 60, 150, 20);
-           descriptionl.setBounds(0, 80, 100, 20);
-           descriptiont.setBounds(0, 100, 150, 30);
-           authorl.setBounds(0, 130, 100, 20);
-           authort.setBounds(0, 150, 150, 20);
-           submit.setBounds(20, 180, 100, 25);
+           namel.setBounds(20, 0, 100, 20);
+           namet.setBounds(20, 20, 150, 20);
+           genrel.setBounds(20, 40, 100, 20);
+           genret.setBounds(20, 60, 150, 20);
+           descriptionl.setBounds(20, 80, 100, 20);
+           descriptiont.setBounds(20, 100, 150, 30);
+           authorl.setBounds(20, 130, 100, 20);
+           authort.setBounds(20, 150, 150, 20);
+           availabilityl.setBounds(20, 170, 100, 20);
+           availabilityt.setBounds(20, 190, 20, 20);
+           submit.setBounds(50, 215, 90, 25);
            
            thirdPanel.setLayout(null);
            thirdPanel.add(namel);
@@ -317,6 +321,8 @@ final int heightx =40;
            thirdPanel.add(descriptiont);
            thirdPanel.add(authorl);
            thirdPanel.add(authort);
+           thirdPanel.add(availabilityl);
+           thirdPanel.add(availabilityt);
            thirdPanel.add(submit);
                                 
            
