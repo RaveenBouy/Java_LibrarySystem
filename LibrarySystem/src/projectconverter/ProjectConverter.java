@@ -241,46 +241,47 @@ final int heightx =40;
        else
        if(command.equals("addMember"))
        {
-           new DynamicPanels().gArea();
+           new DynamicPanels().memberAdd();
        }
        else
        if(command.equals("viewMember"))
        {
-           new DynamicPanels().gVolume();
+           new DynamicPanels().memberView();
        }
        else
        if(command.equals("borrowBook"))
        {
-           new DynamicPanels().uDS();
+           new DynamicPanels().borrowBook();
        }
        else
        if(command.equals("viewBorrow"))
        {
-           new DynamicPanels().uDS();
+           new DynamicPanels().viewBorrowBook();
        }
        else
        if(command.equals("returnBook"))
        {
-           new DynamicPanels().uTemperature();
+           new DynamicPanels().returnBook();
        }
        else
-       if(command.equals("eOL"))
+       if(command.equals("addAuthor"))
        {
-           new DynamicPanels().eOL();
+           new DynamicPanels().addAuthor();
        }
        else
-       if(command.equals("eSDT"))
+       if(command.equals("viewAuthor"))
        {
-           new DynamicPanels().eSDT();
+           new DynamicPanels().viewAuthor();
        }
     }
 }
     private class DynamicPanels extends JFrame//Class which defines the content for the 3rd Panel.
     {       
-        JButton addBookSubmit;
-        JTextField namet,genret,authort,availabilityt;
+        JButton addBookSubmit,addMemberSubmit,addAuthorSubmit;
+        JTextField namet,genret,authort,availabilityt;//Book
+        JTextField titlema,namema,nationalityma,cityma,countryma,contactma; //member, author
         JTextArea descriptiont;
-        
+        JComboBox titleMa;
         public void bookAdd()
         {     
            //Preparing the 3rd Panel            
@@ -369,7 +370,7 @@ final int heightx =40;
            System.out.println("viewBook");              
         }
         
-        public void gArea()
+        public void memberAdd()
         {
            //preparing the 3rd Panel
            thirdPanel.removeAll();
@@ -382,52 +383,64 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           JLabel titlel = new JLabel("Title");
            JLabel namel = new JLabel("Name");
-           JLabel genrel = new JLabel("Genre");
-           JLabel descriptionl = new JLabel("Description");
-           JLabel authorl = new JLabel("Author");
-           JLabel availabilityl = new JLabel("Availability");
-           JButton submit = new JButton("Submit");
+           JLabel nationalityl = new JLabel("Nationality");
+           JLabel cityl = new JLabel("City");
+           JLabel countryl = new JLabel("Country");
+           JLabel contactl = new JLabel("Contact");
+           addMemberSubmit = new JButton("Submit");
+           addMemberSubmit.setActionCommand("addMemberSubmit");
+           addMemberSubmit.addActionListener(new ButtonEventHandler());
            
-           JTextField namet = new JTextField();
-           JTextField genret = new JTextField();
-           JTextArea descriptiont = new JTextArea();
-           JTextField authort = new JTextField();
-           JTextField availabilityt = new JTextField();
+           titleMa = new JComboBox(); 
+           titleMa.addItem("Mr"); 
+           titleMa.addItem("Mrs");
+           namema = new JTextField();
+           nationalityma = new JTextField();
+           cityma = new JTextField();
+           countryma = new JTextField();
+           contactma = new JTextField();
                     
-           namel.setBounds(20, 0, 100, 20);
-           namet.setBounds(20, 20, 150, 20);
-           genrel.setBounds(20, 40, 100, 20);
-           genret.setBounds(20, 60, 150, 20);
-           descriptionl.setBounds(20, 80, 100, 20);
-           descriptiont.setBounds(20, 100, 150, 30);
-           authorl.setBounds(20, 130, 100, 20);
-           authort.setBounds(20, 150, 150, 20);
-           availabilityl.setBounds(20, 170, 100, 20);
-           availabilityt.setBounds(20, 190, 20, 20);
-           submit.setBounds(50, 215, 90, 25);
+           titlel.setBounds(20, 0, 100, 20);
+           titleMa.setBounds(20, 20, 48, 20);
+           namel.setBounds(73, 0, 100, 20);
+           namema.setBounds(73, 20, 100, 20);
+           nationalityl.setBounds(73, 40, 100, 20);
+           nationalityma.setBounds(73, 60, 100, 20);
+           cityl.setBounds(73, 80, 100, 20);
+           cityma.setBounds(73, 100, 100, 20);
+           countryl.setBounds(73, 120, 100, 20);
+           countryma.setBounds(73, 140, 100, 20);
+           contactl.setBounds(73, 160, 100, 20);
+           contactma.setBounds(73, 180, 100, 20);
+           addMemberSubmit.setBounds(76, 210, 90, 25);
+
+           
            
            thirdPanel.setLayout(null);
+           thirdPanel.add(titlel);
+           thirdPanel.add(titleMa);
            thirdPanel.add(namel);
-           thirdPanel.add(namet);
-           thirdPanel.add(genrel);
-           thirdPanel.add(genret);
-           thirdPanel.add(descriptionl);
-           thirdPanel.add(descriptiont);
-           thirdPanel.add(authorl);
-           thirdPanel.add(authort);
-           thirdPanel.add(availabilityl);
-           thirdPanel.add(availabilityt);
-           thirdPanel.add(submit);
+           thirdPanel.add(namema);
+           thirdPanel.add(nationalityl);
+           thirdPanel.add(nationalityma);
+           thirdPanel.add(cityl);
+           thirdPanel.add(cityma);
+           thirdPanel.add(countryl);
+           thirdPanel.add(countryma);
+           thirdPanel.add(contactl);
+           thirdPanel.add(contactma);
+           thirdPanel.add(addMemberSubmit);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("gArea");             
+           System.out.println("AddMember");             
         }
         
-        public void gVolume()
+        public void memberView()
         {
            //preparing the 3rd Panel
            thirdPanel.removeAll();
@@ -445,10 +458,10 @@ final int heightx =40;
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("gVolume");            
+           System.out.println("memberView");            
         }
         
-        public void uDS()
+        public void borrowBook()
         {
            //preparing the 3rd Panel
            thirdPanel.removeAll();
@@ -466,10 +479,10 @@ final int heightx =40;
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("uDS");             
+           System.out.println("borrowBook");             
         }
         
-        public void uTemperature()
+        public void viewBorrowBook()
         {
            //preparing the 3rd Panel
            thirdPanel.removeAll();
@@ -487,31 +500,10 @@ final int heightx =40;
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("uTemp");           
+           System.out.println("viewBorrowBook");           
         }
         
-        public void eOL()
-        {
-           //preparing the 3rd Panel 
-           thirdPanel.removeAll();
-           thirdPanel.revalidate();
-           thirdPanel.repaint();
-           secondPanel.setVisible(true);
-           thirdPanel.setVisible(true);
-           frame.setSize(550,300);
-           thirdPanel.setLocation(297,6);
-           thirdPanel.setSize(218,247);
-           
-           //Initializing the Content
-           
-           //preparing the 3rd Panel
-           backPanel.add(thirdPanel);
-           backPanel.revalidate();
-           backPanel.repaint();
-           System.out.println("eOL");             
-        }
-        
-        public void eSDT()
+        public void returnBook()
         {
            //preparing the 3rd Panel 
            thirdPanel.removeAll();
@@ -529,7 +521,98 @@ final int heightx =40;
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("eSPD");          
+           System.out.println("returnBook");             
+        }
+        
+        public void addAuthor()
+        {
+           //preparing the 3rd Panel
+           thirdPanel.removeAll();
+           thirdPanel.revalidate();
+           thirdPanel.repaint();
+           secondPanel.setVisible(true);
+           thirdPanel.setVisible(true);
+           frame.setSize(550,300);
+           thirdPanel.setLocation(297,6);
+           thirdPanel.setSize(218,247);
+           
+           //Initializing the Content
+           JLabel titlel = new JLabel("Title");
+           JLabel namel = new JLabel("Name");
+           JLabel nationalityl = new JLabel("Nationality");
+           JLabel cityl = new JLabel("City");
+           JLabel countryl = new JLabel("Country");
+           JLabel contactl = new JLabel("Contact");
+           addMemberSubmit = new JButton("Submit");
+           addMemberSubmit.setActionCommand("addMemberSubmit");
+           addMemberSubmit.addActionListener(new ButtonEventHandler());
+           
+           titleMa = new JComboBox(); 
+           titleMa.addItem("Mr"); 
+           titleMa.addItem("Mrs");
+           namema = new JTextField();
+           nationalityma = new JTextField();
+           cityma = new JTextField();
+           countryma = new JTextField();
+           contactma = new JTextField();
+                    
+           titlel.setBounds(20, 0, 100, 20);
+           titleMa.setBounds(20, 20, 48, 20);
+           namel.setBounds(73, 0, 100, 20);
+           namema.setBounds(73, 20, 100, 20);
+           nationalityl.setBounds(73, 40, 100, 20);
+           nationalityma.setBounds(73, 60, 100, 20);
+           cityl.setBounds(73, 80, 100, 20);
+           cityma.setBounds(73, 100, 100, 20);
+           countryl.setBounds(73, 120, 100, 20);
+           countryma.setBounds(73, 140, 100, 20);
+           contactl.setBounds(73, 160, 100, 20);
+           contactma.setBounds(73, 180, 100, 20);
+           addMemberSubmit.setBounds(76, 210, 90, 25);
+
+           
+           
+           thirdPanel.setLayout(null);
+           thirdPanel.add(titlel);
+           thirdPanel.add(titleMa);
+           thirdPanel.add(namel);
+           thirdPanel.add(namema);
+           thirdPanel.add(nationalityl);
+           thirdPanel.add(nationalityma);
+           thirdPanel.add(cityl);
+           thirdPanel.add(cityma);
+           thirdPanel.add(countryl);
+           thirdPanel.add(countryma);
+           thirdPanel.add(contactl);
+           thirdPanel.add(contactma);
+           thirdPanel.add(addMemberSubmit);
+           
+           //preparing the 3rd Panel
+           backPanel.add(thirdPanel);
+           backPanel.revalidate();
+           backPanel.repaint();
+           System.out.println("addAuthor");       
+        }
+        
+        public void viewAuthor()
+        {
+           //preparing the 3rd Panel 
+           thirdPanel.removeAll();
+           thirdPanel.revalidate();
+           thirdPanel.repaint();
+           secondPanel.setVisible(true);
+           thirdPanel.setVisible(true);
+           frame.setSize(550,300);
+           thirdPanel.setLocation(297,6);
+           thirdPanel.setSize(218,247);
+           
+           //Initializing the Content
+           
+           //preparing the 3rd Panel
+           backPanel.add(thirdPanel);
+           backPanel.revalidate();
+           backPanel.repaint();
+           System.out.println("viewAuthor");             
         }
         
     private class ButtonEventHandler implements ActionListener
@@ -549,13 +632,13 @@ final int heightx =40;
         b1.setDescription(descriptiont.getText());
         b1.setAvailability(Integer.parseInt(availabilityt.getText())); 
         
+           
            try {
                b1.addBook();
-           } catch (ClassNotFoundException ex) {
-               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
-           } catch (SQLException ex) {
+           } catch (ClassNotFoundException | SQLException ex) {
                Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
            }
+           
            System.out.println("addbook");
        }
     }
