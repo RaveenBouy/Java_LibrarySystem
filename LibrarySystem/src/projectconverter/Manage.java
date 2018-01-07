@@ -5,13 +5,15 @@
  */
 package projectconverter;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author shenal
  */
 public interface Manage {
     
-    public void search();
-    public void sort();
+    public abstract ResultSet search(String name);
+    public abstract ResultSet sort();
     
 }
