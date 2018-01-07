@@ -71,8 +71,8 @@ public class Member extends Person implements Manage {
         } catch (ClassNotFoundException | SQLException ex) {
             ex.getMessage();
         }
-        finally{
-        return rs; }
+        
+        return rs; 
     }
  @Override  
         public ResultSet viewPersonDetails(String name)
@@ -85,8 +85,8 @@ public class Member extends Person implements Manage {
         } catch (ClassNotFoundException | SQLException ex) {
             ex.getMessage();
         }
-        finally{
-        return rs; }
+        
+        return rs; 
         
     }
 
@@ -100,8 +100,8 @@ public class Member extends Person implements Manage {
         } catch (ClassNotFoundException | SQLException ex) {
             ex.getMessage();
         }
-        finally{
-        return rs; }
+        
+        return rs; 
     }
 
     @Override
@@ -114,8 +114,8 @@ public class Member extends Person implements Manage {
         } catch (ClassNotFoundException | SQLException ex) {
             ex.getMessage();
         }
-        finally{
-        return rs; }
+        
+        return rs; 
     }
     
 }
