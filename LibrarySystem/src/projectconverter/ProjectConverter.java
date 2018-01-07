@@ -111,6 +111,7 @@ final int heightx =40;
     
   private class ButtonEventHandler implements ActionListener
   {   
+    @Override
     public void actionPerformed(ActionEvent e)
     {
        String command = e.getActionCommand();
@@ -543,9 +544,9 @@ final int heightx =40;
            JLabel cityl = new JLabel("City");
            JLabel countryl = new JLabel("Country");
            JLabel contactl = new JLabel("Contact");
-           addMemberSubmit = new JButton("Submit");
-           addMemberSubmit.setActionCommand("addMemberSubmit");
-           addMemberSubmit.addActionListener(new ButtonEventHandler());
+           addAuthorSubmit = new JButton("Submit");
+           addAuthorSubmit.setActionCommand("addAuthorSubmit");
+           addAuthorSubmit.addActionListener(new ButtonEventHandler());
            
            titleMa = new JComboBox(); 
            titleMa.addItem("Mr"); 
@@ -568,7 +569,7 @@ final int heightx =40;
            countryma.setBounds(73, 140, 100, 20);
            contactl.setBounds(73, 160, 100, 20);
            contactma.setBounds(73, 180, 100, 20);
-           addMemberSubmit.setBounds(76, 210, 90, 25);
+           addAuthorSubmit.setBounds(76, 210, 90, 25);
 
            
            
@@ -585,7 +586,7 @@ final int heightx =40;
            thirdPanel.add(countryma);
            thirdPanel.add(contactl);
            thirdPanel.add(contactma);
-           thirdPanel.add(addMemberSubmit);
+           thirdPanel.add(addAuthorSubmit);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -640,6 +641,76 @@ final int heightx =40;
            }
            
            System.out.println("addbook");
+       }
+       else
+       if(command.equals("addMemberSubmit"))
+       {  
+       Member m1 = new Member();
+       m1.setTitle(titleMa.getSelectedItem().toString());
+       m1.setName(namema.getText());
+       m1.setCountry(countryma.getText());
+       m1.setCity(cityma.getText());
+       m1.setNationality(nationalityma.getText());                        
+       m1.setContact(contactma.getText());       
+       m1.addPerson();
+           System.out.println("addMember");
+       }
+       else
+       if(command.equals("addAuthorSubmit"))
+       {  
+       Author a1 = new Author();
+       a1.setTitle(titleMa.getSelectedItem().toString());
+       a1.setName(namema.getText());
+       a1.setCountry(countryma.getText());
+       a1.setCity(cityma.getText());
+       a1.setNationality(nationalityma.getText());                        
+       a1.setContact(contactma.getText());       
+       a1.addPerson();
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
+       }
+       else
+       if(command.equals("add"))
+       {  
+       
        }
     }
    }
