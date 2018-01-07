@@ -106,8 +106,8 @@ final int heightx =40;
         new ProjectConverter();   
     }
     
-    private class ButtonEventHandler implements ActionListener
-    {   
+  private class ButtonEventHandler implements ActionListener
+  {   
     public void actionPerformed(ActionEvent e)
     {
        String command = e.getActionCommand();
@@ -272,8 +272,12 @@ final int heightx =40;
        }
     }
 }
-    private class DynamicPanels //Class which defines the content for the 3rd Panel.
-    {
+    private class DynamicPanels extends JFrame//Class which defines the content for the 3rd Panel.
+    {       
+        JButton addBookSubmit;
+        JTextField namet,genret,authort,availabilityt;
+        JTextArea descriptiont;
+        
         public void bookAdd()
         {     
            //Preparing the 3rd Panel            
@@ -292,13 +296,15 @@ final int heightx =40;
            JLabel descriptionl = new JLabel("Description");
            JLabel authorl = new JLabel("Author");
            JLabel availabilityl = new JLabel("Availability");
-           JButton submit = new JButton("Submit");
+           addBookSubmit = new JButton("Submit");
+           addBookSubmit.setActionCommand("addBookSubmit");
+           addBookSubmit.addActionListener(new ButtonEventHandler());
            
-           JTextField namet = new JTextField();
-           JTextField genret = new JTextField();
-           JTextArea descriptiont = new JTextArea();
-           JTextField authort = new JTextField();
-           JTextField availabilityt = new JTextField();
+           namet = new JTextField();
+           genret = new JTextField();
+           descriptiont = new JTextArea();
+           authort = new JTextField();
+           availabilityt = new JTextField();
                     
            namel.setBounds(20, 0, 100, 20);
            namet.setBounds(20, 20, 150, 20);
@@ -310,7 +316,7 @@ final int heightx =40;
            authort.setBounds(20, 150, 150, 20);
            availabilityl.setBounds(20, 170, 100, 20);
            availabilityt.setBounds(20, 190, 20, 20);
-           submit.setBounds(50, 215, 90, 25);
+           addBookSubmit.setBounds(50, 215, 90, 25);
            
            thirdPanel.setLayout(null);
            thirdPanel.add(namel);
@@ -323,7 +329,7 @@ final int heightx =40;
            thirdPanel.add(authort);
            thirdPanel.add(availabilityl);
            thirdPanel.add(availabilityt);
-           thirdPanel.add(submit);
+           thirdPanel.add(addBookSubmit);
                                 
            
            //preparing the 3rd Panel
@@ -522,6 +528,23 @@ final int heightx =40;
            backPanel.repaint();
            System.out.println("eSPD");          
         }
+        
+    private class ButtonEventHandler implements ActionListener
+    {   
+    public void actionPerformed(ActionEvent e)
+    {
+       String command = e.getActionCommand();
+       //secondPanel.setBackground(Color.green);
+       //thirdPanel.setBackground(Color.blue);
+       if(command.equals("addBookSubmit"))
+       {  
+                             
+           
+           
+           System.out.println(namet.getText());      
+       }
     }
+   }
+  }
 }
 
