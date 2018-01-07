@@ -17,8 +17,8 @@ import javax.swing.*;
 public class ProjectConverter extends JFrame 
 {
 public JFrame frame;
-public JPanel firstPanel, secondPanel, thirdPanel, backPanel;
-private JButton book,member,borrowReturn,author,addBook,viewBook,borrowBook,returnBook, addMember, viewMember, addAuthor, viewAuthor;
+public JPanel firstPanel, secondPanel, thirdPanel, fourthPanel, backPanel;
+private JButton book,member,borrowReturn,author,addBook,viewBook,borrowBook,viewBorrow,returnBook, addMember, viewMember, addAuthor, viewAuthor;
 
 public JSeparator s1, s2;
 final int heightx =40;
@@ -36,17 +36,20 @@ final int heightx =40;
           firstPanel = new JPanel();
           secondPanel = new JPanel();
           thirdPanel = new JPanel();
+          fourthPanel = new JPanel();
           backPanel = new JPanel();                  
           
           //Setting Panel Size
           firstPanel.setSize(103,247);
           secondPanel.setSize(155,247);
           thirdPanel.setSize(218,247);
+          fourthPanel.setSize(218,247);
 
           //Setting Panel Location
           firstPanel.setLocation(6,6);
           secondPanel.setLocation(125, 6);
           thirdPanel.setLocation(297,6);
+          fourthPanel.setLocation(525,6);
           
           //Setting panel layout to null so then the buttons can be localized
           firstPanel.setLayout(null);
@@ -77,7 +80,7 @@ final int heightx =40;
                     
           //Add colors to panels ---Test
           //secondPanel.setBackground(Color.green);
-          thirdPanel.setBackground(Color.blue);
+          //thirdPanel.setBackground(Color.blue);
                   
           //adding buttons to firstPanel
           firstPanel.add(book);         
@@ -169,10 +172,13 @@ final int heightx =40;
            secondPanel.setVisible(true);
            thirdPanel.setVisible(false);  
            borrowBook = new JButton("Borrow Book");
-           returnBook    = new JButton("Return Book");
+           viewBorrow = new JButton("View Borrowed");
+           returnBook  = new JButton("Return Book");
            borrowBook.setActionCommand("borrowBook");
+           viewBorrow.setActionCommand("viewBorrow");
            returnBook.setActionCommand("returnBook");
            borrowBook.addActionListener(new ButtonEventHandler());
+           viewBorrow.addActionListener(new ButtonEventHandler());
            returnBook.addActionListener(new ButtonEventHandler());
            secondPanel.removeAll();
            secondPanel.revalidate();
@@ -182,8 +188,10 @@ final int heightx =40;
            secondPanel.setSize(155,247);
            secondPanel.setLocation(125, 6);
            borrowBook.setBounds(0,40,155,heightx);  
-           returnBook.setBounds(0,98,155,heightx);
+           viewBorrow.setBounds(0,98,155,heightx);  
+           returnBook.setBounds(0,156,155,heightx);
            secondPanel.add(borrowBook);
+           secondPanel.add(viewBorrow);
            secondPanel.add(returnBook);
            backPanel.add(secondPanel);
            backPanel.revalidate();
@@ -220,12 +228,12 @@ final int heightx =40;
        else                            //Adding Listeners to the second Panel **All the windows for the 2nd panel**
        if(command.equals("addBook"))
        {
-           new DynamicPanels().aAverage();          
+           new DynamicPanels().bookAdd();          
        }
        else
        if(command.equals("viewBook"))
        {
-           new DynamicPanels().aDTF();
+           new DynamicPanels().bookView();
        }
        else
        if(command.equals("addMember"))
@@ -238,12 +246,17 @@ final int heightx =40;
            new DynamicPanels().gVolume();
        }
        else
-       if(command.equals("borrow"))
+       if(command.equals("borrowBook"))
        {
            new DynamicPanels().uDS();
        }
        else
-       if(command.equals("uTemperature"))
+       if(command.equals("viewBorrow"))
+       {
+           new DynamicPanels().uDS();
+       }
+       else
+       if(command.equals("returnBook"))
        {
            new DynamicPanels().uTemperature();
        }
@@ -261,7 +274,7 @@ final int heightx =40;
 }
     private class DynamicPanels //Class which defines the content for the 3rd Panel.
     {
-        public void aAverage()
+        public void bookAdd()
         {     
            //Preparing the 3rd Panel            
            thirdPanel.removeAll();
@@ -274,19 +287,47 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
-//           testB = new JButton("WATTTTTTTT");
-//           thirdPanel.setLayout(null);
-//           thirdPanel.add(testB);
-//           testB.setBounds(0,98,185,heightx);                      
+           JLabel namel = new JLabel("Name");
+           JLabel genrel = new JLabel("Genre");
+           JLabel descriptionl = new JLabel("Description");
+           JLabel authorl = new JLabel("Author");
+           JButton submit = new JButton("Submit");
+           
+           JTextField namet = new JTextField();
+           JTextField genret = new JTextField();
+           JTextArea descriptiont = new JTextArea();
+           JTextField authort = new JTextField();
+                    
+           namel.setBounds(0, 0, 100, 20);
+           namet.setBounds(0, 20, 150, 20);
+           genrel.setBounds(0, 40, 100, 20);
+           genret.setBounds(0, 60, 150, 20);
+           descriptionl.setBounds(0, 80, 100, 20);
+           descriptiont.setBounds(0, 100, 150, 30);
+           authorl.setBounds(0, 130, 100, 20);
+           authort.setBounds(0, 150, 150, 20);
+           submit.setBounds(20, 180, 100, 25);
+           
+           thirdPanel.setLayout(null);
+           thirdPanel.add(namel);
+           thirdPanel.add(namet);
+           thirdPanel.add(genrel);
+           thirdPanel.add(genret);
+           thirdPanel.add(descriptionl);
+           thirdPanel.add(descriptiont);
+           thirdPanel.add(authorl);
+           thirdPanel.add(authort);
+           thirdPanel.add(submit);
+                                
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();         
-           System.out.println("aAverage");
+           System.out.println("addBook");
         }
         
-        public void aDTF()
+        public void bookView()
         {
            //Preparing the 3rd Panel 
            thirdPanel.removeAll();
@@ -299,12 +340,17 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           JList books = new JList();
+           books.setBounds(0, 0, 200, 200);
+           thirdPanel.setLayout(null);
+           thirdPanel.add(books);
+           
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
            backPanel.revalidate();
            backPanel.repaint();
-           System.out.println("aDTF");              
+           System.out.println("viewBook");              
         }
         
         public void gArea()
