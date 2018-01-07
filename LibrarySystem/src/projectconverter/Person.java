@@ -5,19 +5,14 @@
  */
 package projectconverter;
 
-import java.sql.ResultSet;
-
 /**
  *
  * @author shenal
  */
-public abstract class Person {
-
-    protected String title,pname,nationality,city,country,contact;
+public interface Person {
     
-    public abstract String addPerson();
+    public String addPerson(String title, String name, String nationality, String city, String country, String contact);
     
-    public abstract ResultSet viewPerson();
+    public void viewPerson();
     
-    public abstract ResultSet viewPersonDetails(String name);
 }
