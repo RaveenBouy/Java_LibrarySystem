@@ -92,7 +92,7 @@ public class Member extends Person implements Manage {
 
     @Override
     public ResultSet search(String name) {
-     String sql = "SELECT title,name,nationality,city,country,contact FROM Author WHERE name LIKE '%"+name+"%'";
+     String sql = "SELECT title,name,nationality,city,country,contact FROM Member WHERE name LIKE '%"+name+"%'";
     ResultSet rs = null;
      DatabaseCon con = new DatabaseCon();
         try {
@@ -106,7 +106,7 @@ public class Member extends Person implements Manage {
 
     @Override
     public ResultSet sort() {
-        String sql = "SELECT name FROM Author SORT BY ASC";
+        String sql = "SELECT name FROM Member ORDER BY name ASC";
         ResultSet rs = null;
         DatabaseCon con = new DatabaseCon();
         try {

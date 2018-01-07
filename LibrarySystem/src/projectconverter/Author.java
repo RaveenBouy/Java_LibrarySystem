@@ -109,7 +109,7 @@ public class Author extends Person implements Manage {
 
     @Override
     public ResultSet sort() {
-        String sql = "SELECT name FROM Author SORT BY ASC";
+        String sql = "SELECT name FROM book ORDER BY name ASC";
         ResultSet rs = null;
         DatabaseCon con = new DatabaseCon();
         try {

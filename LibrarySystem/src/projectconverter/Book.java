@@ -97,7 +97,7 @@ public class Book implements Manage{
 
     @Override
     public ResultSet sort() {
-        String sql = "SELECT name FROM book SORT BY ASC";
+        String sql = "SELECT name FROM book ORDER BY name ASC";
         ResultSet rs = null;
         DatabaseCon con = new DatabaseCon();
         try {

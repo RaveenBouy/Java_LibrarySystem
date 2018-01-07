@@ -254,7 +254,11 @@ final int heightx =40;
        else
        if(command.equals("viewMember"))
        {
-           new DynamicPanels().memberView();
+           try {
+               new DynamicPanels().memberView();
+           } catch (ClassNotFoundException | SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
        if(command.equals("borrowBook"))
@@ -285,12 +289,13 @@ final int heightx =40;
 }
     private class DynamicPanels extends JFrame//Class which defines the content for the 3rd Panel.
     {       
-        JButton addBookSubmit,addMemberSubmit,addAuthorSubmit;
-        JTextField namet,genret,authort,availabilityt;//Book
+        JButton addBookSubmit,addMemberSubmit,addAuthorSubmit,sortb,searchb;
+        JTextField namet,genret,authort,availabilityt,searcht;//Book
         JTextField titlema,namema,nationalityma,cityma,countryma,contactma; //member, author
         JTextArea descriptiont;
         JComboBox titleMa;
         JList list;
+        DefaultListModel lm;
         public void bookAdd()
         {     
            //Preparing the 3rd Panel            
@@ -353,8 +358,8 @@ final int heightx =40;
            
         }
         
-        public void bookView() throws ClassNotFoundException, SQLException
-        {
+        public void bookView() throws ClassNotFoundException, SQLException //BookView************************
+        {//authorSort,authorSearchb;authorSearcht;//Book
            //Preparing the 3rd Panel 
            thirdPanel.removeAll();
            thirdPanel.revalidate();
@@ -365,20 +370,36 @@ final int heightx =40;
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
-           //Initializing the Content
-           
-           DefaultListModel lm = new DefaultListModel();
+           //Initializing the Content          
+           lm = new DefaultListModel();
+           JLabel bookSearchl = new JLabel("Search Book");
            list = new JList(lm);
+           sortb = new JButton("Sort");
+           searchb = new JButton("Search");
+           searcht = new JTextField();
+           sortb.setActionCommand("bookSort");
+           searchb.setActionCommand("bookSearch");
            list.addListSelectionListener(new ButtonEventHandler());
-           list.setBounds(0, 0, 130,247);   
-           thirdPanel.setLayout(null);
+           sortb.addActionListener(new ButtonEventHandler());
+           searchb.addActionListener(new ButtonEventHandler());
+           list.setBounds(0, 0, 120,247);
+           sortb.setBounds(135, 10, 60, 20);
+           bookSearchl.setBounds(123, 60, 80, 20);
+           searcht.setBounds(123, 80, 90, 20);
+           searchb.setBounds(130, 105, 75, 20);
            
            ResultSet books = Book.getBooks();
+           lm.removeAllElements();
            while(books.next())
            {
               lm.addElement(books.getString(1));
            }
+           thirdPanel.setLayout(null);
            thirdPanel.add(list);
+           thirdPanel.add(sortb);
+           thirdPanel.add(bookSearchl);
+           thirdPanel.add(searcht);
+           thirdPanel.add(searchb);
            
            
            //preparing the 3rd Panel
@@ -458,7 +479,7 @@ final int heightx =40;
            System.out.println("AddMember");             
         }
         
-        public void memberView()
+        public void memberView() throws ClassNotFoundException, SQLException
         {
            //preparing the 3rd Panel
            thirdPanel.removeAll();
@@ -471,6 +492,36 @@ final int heightx =40;
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           lm = new DefaultListModel();
+           JLabel memberSearch = new JLabel("Search Member");
+           list = new JList(lm);
+           sortb = new JButton("Sort");
+           searchb = new JButton("Search");
+           searcht = new JTextField();
+           sortb.setActionCommand("memberSort");
+           searchb.setActionCommand("memberSearch");
+           list.addListSelectionListener(new ButtonEventHandler());
+           sortb.addActionListener(new ButtonEventHandler());
+           searchb.addActionListener(new ButtonEventHandler());
+           list.setBounds(0, 0, 120,247);
+           sortb.setBounds(135, 10, 60, 20);
+           memberSearch.setBounds(123, 60, 80, 20);
+           searcht.setBounds(123, 80, 90, 20);
+           searchb.setBounds(130, 105, 75, 20);
+           
+           Member m1 = new Member();
+           ResultSet members = m1.viewPerson();
+           lm.removeAllElements();
+           while(members.next())
+           {
+              lm.addElement(members.getString(1));
+           }
+           thirdPanel.setLayout(null);
+           thirdPanel.add(list);
+           thirdPanel.add(sortb);
+           thirdPanel.add(memberSearch);
+           thirdPanel.add(searcht);
+           thirdPanel.add(searchb);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -648,8 +699,7 @@ final int heightx =40;
         b1.setGenre(genret.getText());
         b1.setDescription(descriptiont.getText());
         b1.setAvailability(Integer.parseInt(availabilityt.getText())); 
-        
-           
+                  
            try {
                b1.addBook();
            } catch (ClassNotFoundException | SQLException ex) {
@@ -684,34 +734,75 @@ final int heightx =40;
        a1.addPerson();
        }
        else
-       if(command.equals("add"))
+       if(command.equals("bookSort"))
+       {  
+       Book b3 = new Book();
+       ResultSet books = b3.sort();
+           try {
+               lm.removeAllElements();
+               while(books.next())
+               {
+                   lm.addElement(books.getString(1));                 
+               }
+               System.out.println("bookSort");
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else
+       if(command.equals("memberSort"))
+       {  
+       Member m3 = new Member();
+       ResultSet members = m3.sort();
+           try {
+               lm.removeAllElements();
+               while(members.next())
+               {
+                   lm.addElement(members.getString(1));                  
+               }
+               System.out.println("memberSort");
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       else
+       if(command.equals("authorSort"))
        {  
        
        }
        else
-       if(command.equals("add"))
+       if(command.equals("bookSearch"))
        {  
-       
+        Book b3 = new Book();
+        ResultSet books = b3.search(searcht.getText());
+           try 
+           {
+               lm.removeAllElements();
+               while(books.next())
+               {
+                   lm.addElement(books.getString(1));
+               }
+               System.out.println("bookSearch");
+            } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
-       if(command.equals("add"))
+       if(command.equals("memberSearch"))
        {  
-       
-       }
-       else
-       if(command.equals("add"))
-       {  
-       
-       }
-       else
-       if(command.equals("add"))
-       {  
-       
-       }
-       else
-       if(command.equals("add"))
-       {  
-       
+        Member m3 = new Member();
+        ResultSet members = m3.search(searcht.getText());
+           try 
+           {
+               lm.removeAllElements();
+               while(members.next())
+               {
+                   lm.addElement(members.getString(2));
+               }
+               System.out.println("bookSearch");
+            } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
        if(command.equals("add"))
