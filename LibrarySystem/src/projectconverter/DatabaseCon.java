@@ -51,4 +51,15 @@ public class DatabaseCon {
     //conn.close();
     return rs;
     }
+     
+      public ResultSet select(String sql,String name, int no) throws ClassNotFoundException, SQLException
+    {
+    Connection conn = getConnection();
+    PreparedStatement pstmt = conn.prepareStatement(sql);
+    pstmt.setInt(1, no);
+    pstmt.setString(2, name);  
+    ResultSet rs = pstmt.executeQuery();
+    //conn.close();
+    return rs;
+    }
 }

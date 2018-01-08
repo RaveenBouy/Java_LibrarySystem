@@ -5,11 +5,16 @@
  */
 package projectconverter;
 
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -64,21 +69,18 @@ final int heightx =40;
           backPanel.add(firstPanel);
           
           //Creating Button Objects
-          //calculateBtn = new JButton("Calculator");
           book = new JButton("Books");
           member = new JButton("Members");
           borrowReturn = new JButton("Borrow/Return");
           author = new JButton("Authors");     
           
           //Adding ActionCommands to buttons
-          //calculateBtn.setActionCommand("calculate");
           book.setActionCommand("book");
           member.setActionCommand("member");
           borrowReturn.setActionCommand("borrowReturn");
           author.setActionCommand("author");
           
           //Adding ActionListeners to buttons
-          //calculateBtn.addActionListener(new ButtonEventHandler());
           book.addActionListener(new ButtonEventHandler());
           member.addActionListener(new ButtonEventHandler());
           borrowReturn.addActionListener(new ButtonEventHandler());
@@ -268,7 +270,13 @@ final int heightx =40;
        else
        if(command.equals("viewBorrow"))
        {
-           new DynamicPanels().viewBorrowBook();
+           try {
+               new DynamicPanels().viewBorrowBook();
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           } catch (ClassNotFoundException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
        if(command.equals("returnBook"))
@@ -283,19 +291,28 @@ final int heightx =40;
        else
        if(command.equals("viewAuthor"))
        {
-           new DynamicPanels().viewAuthor();
+           try {
+               new DynamicPanels().viewAuthor();
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
     }
 }
     private class DynamicPanels extends JFrame//Class which defines the content for the 3rd Panel.
     {       
-        JButton addBookSubmit,addMemberSubmit,addAuthorSubmit,sortb,searchb;
+        JButton submitb,sortb,searchb;
         JTextField namet,genret,authort,availabilityt,searcht;//Book
         JTextField titlema,namema,nationalityma,cityma,countryma,contactma; //member, author
         JTextArea descriptiont;
         JComboBox titleMa;
         JList list;
         DefaultListModel lm;
+        String selectedValue = new String();       
+        JLabel ansnamel,ansgenrel,ansavailabilityl,ansauthorl,ansanamel,ansanationalityl;         
+        JTextField returnedAfter;
+        String returnedAuthName;
+        
         public void bookAdd()
         {     
            //Preparing the 3rd Panel            
@@ -304,7 +321,7 @@ final int heightx =40;
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);  
-           frame.setSize(550,300);
+           frame.setSize(520,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
@@ -314,9 +331,9 @@ final int heightx =40;
            JLabel descriptionl = new JLabel("Description");
            JLabel authorl = new JLabel("Author");
            JLabel availabilityl = new JLabel("Availability");
-           addBookSubmit = new JButton("Submit");
-           addBookSubmit.setActionCommand("addBookSubmit");
-           addBookSubmit.addActionListener(new ButtonEventHandler());
+           submitb = new JButton("Submit");
+           submitb.setActionCommand("addBookSubmit");
+           submitb.addActionListener(new ButtonEventHandler());
            
            namet = new JTextField();
            genret = new JTextField();
@@ -334,7 +351,7 @@ final int heightx =40;
            authort.setBounds(20, 150, 150, 20);
            availabilityl.setBounds(20, 170, 100, 20);
            availabilityt.setBounds(20, 190, 20, 20);
-           addBookSubmit.setBounds(50, 215, 90, 25);
+           submitb.setBounds(50, 215, 90, 25);
            
            thirdPanel.setLayout(null);
            thirdPanel.add(namel);
@@ -347,7 +364,7 @@ final int heightx =40;
            thirdPanel.add(authort);
            thirdPanel.add(availabilityl);
            thirdPanel.add(availabilityt);
-           thirdPanel.add(addBookSubmit);
+           thirdPanel.add(submitb);
                                 
            
            //preparing the 3rd Panel
@@ -359,14 +376,19 @@ final int heightx =40;
         }
         
         public void bookView() throws ClassNotFoundException, SQLException //BookView************************
-        {//authorSort,authorSearchb;authorSearcht;//Book
+        {
+           selectedValue = "book";
+           
            //Preparing the 3rd Panel 
+           fourthPanel.removeAll();
+           fourthPanel.revalidate();
+           fourthPanel.repaint();
            thirdPanel.removeAll();
            thirdPanel.revalidate();
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
@@ -394,6 +416,7 @@ final int heightx =40;
            {
               lm.addElement(books.getString(1));
            }
+           
            thirdPanel.setLayout(null);
            thirdPanel.add(list);
            thirdPanel.add(sortb);
@@ -417,7 +440,7 @@ final int heightx =40;
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
@@ -428,9 +451,9 @@ final int heightx =40;
            JLabel cityl = new JLabel("City");
            JLabel countryl = new JLabel("Country");
            JLabel contactl = new JLabel("Contact");
-           addMemberSubmit = new JButton("Submit");
-           addMemberSubmit.setActionCommand("addMemberSubmit");
-           addMemberSubmit.addActionListener(new ButtonEventHandler());
+           submitb = new JButton("Submit");
+           submitb.setActionCommand("addMemberSubmit");
+           submitb.addActionListener(new ButtonEventHandler());
            
            titleMa = new JComboBox(); 
            titleMa.addItem("Mr"); 
@@ -453,10 +476,8 @@ final int heightx =40;
            countryma.setBounds(73, 140, 100, 20);
            contactl.setBounds(73, 160, 100, 20);
            contactma.setBounds(73, 180, 100, 20);
-           addMemberSubmit.setBounds(76, 210, 90, 25);
-
-           
-           
+           submitb.setBounds(76, 210, 90, 25);
+          
            thirdPanel.setLayout(null);
            thirdPanel.add(titlel);
            thirdPanel.add(titleMa);
@@ -470,7 +491,7 @@ final int heightx =40;
            thirdPanel.add(countryma);
            thirdPanel.add(contactl);
            thirdPanel.add(contactma);
-           thirdPanel.add(addMemberSubmit);
+           thirdPanel.add(submitb);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -481,13 +502,18 @@ final int heightx =40;
         
         public void memberView() throws ClassNotFoundException, SQLException
         {
+           selectedValue = "member";
+           
            //preparing the 3rd Panel
+           fourthPanel.removeAll();
+           fourthPanel.revalidate();
+           fourthPanel.repaint();
            thirdPanel.removeAll();
            thirdPanel.revalidate();
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
@@ -505,7 +531,7 @@ final int heightx =40;
            searchb.addActionListener(new ButtonEventHandler());
            list.setBounds(0, 0, 120,247);
            sortb.setBounds(135, 10, 60, 20);
-           memberSearch.setBounds(123, 60, 80, 20);
+           memberSearch.setBounds(123, 60, 100, 20);
            searcht.setBounds(123, 80, 90, 20);
            searchb.setBounds(130, 105, 75, 20);
            
@@ -538,11 +564,29 @@ final int heightx =40;
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           JLabel name = new JLabel("Borrower Name");
+           JLabel book = new JLabel("Book Name");
+           namet = new JTextField();
+           namema = new JTextField();
+           submitb = new JButton("Submit");
+           submitb.setActionCommand("submitBorrow");
+           submitb.addActionListener(new ButtonEventHandler());
+           name.setBounds(30, 10, 100, 20);
+           namet.setBounds(30, 30, 150, 20);
+           book.setBounds(30, 65, 100, 20);
+           namema.setBounds(30, 85, 150, 20);
+           submitb.setBounds(58, 120, 90, 24);
+           thirdPanel.setLayout(null);
+           thirdPanel.add(name);
+           thirdPanel.add(namet);
+           thirdPanel.add(book);
+           thirdPanel.add(namema);
+           thirdPanel.add(submitb);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -551,19 +595,45 @@ final int heightx =40;
            System.out.println("borrowBook");             
         }
         
-        public void viewBorrowBook()
+        public void viewBorrowBook() throws SQLException, ClassNotFoundException
         {
+           String todayydate = new String();
+           Calendar todayy = Calendar.getInstance();
+           todayydate = todayy.getTime().toString();
            //preparing the 3rd Panel
+           fourthPanel.removeAll();
+           fourthPanel.revalidate();
+           fourthPanel.repaint();
            thirdPanel.removeAll();
            thirdPanel.revalidate();
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           lm = new DefaultListModel();
+           list = new JList(lm);         
+           list.setBounds(0, 0, 200,227);
+           thirdPanel.setLayout(null);
+           thirdPanel.add(list);
+           
+           ResultSet bookborrowview = bookBorrow.getBorrowed();
+           lm.removeAllElements();
+            try 
+            {
+                while(bookborrowview.next())
+                {
+                    lm.addElement(bookborrowview.getString(2));
+                }
+            } 
+            catch (SQLException ex) 
+            {
+                Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -574,18 +644,55 @@ final int heightx =40;
         
         public void returnBook()
         {
-           //preparing the 3rd Panel 
+           String todayydate = new String();
+           Calendar todayy = Calendar.getInstance();
+           todayydate = todayy.getTime().toString();
+                           
+           //preparing the 3rd Panel
            thirdPanel.removeAll();
            thirdPanel.revalidate();
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           JLabel name = new JLabel("Borrower Name");
+           JLabel book = new JLabel("Book Name");
+           JLabel bdate = new JLabel("");
+           JLabel tdate = new JLabel(todayydate);  
+           JLabel returnedAfterl = new JLabel("Returned after:");         
+           namet = new JTextField();
+           namema = new JTextField();
+           returnedAfter = new JTextField();
+           submitb = new JButton("Submit");
+           submitb.setActionCommand("submitBookReturn");
+           submitb.addActionListener(new ButtonEventHandler());
+                                                                       
+           name.setBounds(30, 10, 100, 20);
+           namet.setBounds(30, 30, 150, 20);
+           book.setBounds(30, 65, 100, 20);
+           namema.setBounds(30, 85, 150, 20);
+           bdate.setBounds(30, 105, 150, 20);
+           tdate.setBounds(30, 125, 150, 20);
+           returnedAfterl.setBounds(30, 145, 100, 20);
+           returnedAfter.setBounds(120, 145, 20, 20);
+           submitb.setBounds(60, 180, 90, 20);
            
+           thirdPanel.setLayout(null);
+           thirdPanel.add(name);
+           thirdPanel.add(namet);
+           thirdPanel.add(book);
+           thirdPanel.add(namema);
+           thirdPanel.add(bdate);
+           thirdPanel.add(tdate);
+           thirdPanel.add(returnedAfterl);
+           thirdPanel.add(returnedAfter);
+           thirdPanel.add(returnedAfter);
+           thirdPanel.add(submitb);
+           //returnedAfter
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
            backPanel.revalidate();
@@ -601,7 +708,7 @@ final int heightx =40;
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
@@ -612,10 +719,11 @@ final int heightx =40;
            JLabel cityl = new JLabel("City");
            JLabel countryl = new JLabel("Country");
            JLabel contactl = new JLabel("Contact");
-           addAuthorSubmit = new JButton("Submit");
-           addAuthorSubmit.setActionCommand("addAuthorSubmit");
-           addAuthorSubmit.addActionListener(new ButtonEventHandler());
+           submitb = new JButton("Submit");
+           submitb.setActionCommand("addAuthorSubmit");
+           submitb.addActionListener(new ButtonEventHandler());
            
+           thirdPanel.setLayout(null);
            titleMa = new JComboBox(); 
            titleMa.addItem("Mr"); 
            titleMa.addItem("Mrs");
@@ -637,9 +745,7 @@ final int heightx =40;
            countryma.setBounds(73, 140, 100, 20);
            contactl.setBounds(73, 160, 100, 20);
            contactma.setBounds(73, 180, 100, 20);
-           addAuthorSubmit.setBounds(76, 210, 90, 25);
-
-           
+           submitb.setBounds(76, 210, 90, 25);        
            
            thirdPanel.setLayout(null);
            thirdPanel.add(titlel);
@@ -654,7 +760,7 @@ final int heightx =40;
            thirdPanel.add(countryma);
            thirdPanel.add(contactl);
            thirdPanel.add(contactma);
-           thirdPanel.add(addAuthorSubmit);
+           thirdPanel.add(submitb);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -663,19 +769,54 @@ final int heightx =40;
            System.out.println("addAuthor");       
         }
         
-        public void viewAuthor()
+        public void viewAuthor() throws SQLException
         {
+           selectedValue = "author";
+            
            //preparing the 3rd Panel 
+           fourthPanel.removeAll();
+           fourthPanel.revalidate();
+           fourthPanel.repaint();
            thirdPanel.removeAll();
            thirdPanel.revalidate();
            thirdPanel.repaint();
            secondPanel.setVisible(true);
            thirdPanel.setVisible(true);
-           frame.setSize(550,300);
+           frame.setSize(530,300);
            thirdPanel.setLocation(297,6);
            thirdPanel.setSize(218,247);
            
            //Initializing the Content
+           lm = new DefaultListModel();
+           JLabel authorSearch = new JLabel("Search Author");
+           list = new JList(lm);
+           sortb = new JButton("Sort");
+           searchb = new JButton("Search");
+           searcht = new JTextField();
+           sortb.setActionCommand("authorSort");
+           searchb.setActionCommand("authorSearch");
+           list.addListSelectionListener(new ButtonEventHandler());
+           sortb.addActionListener(new ButtonEventHandler());
+           searchb.addActionListener(new ButtonEventHandler());
+           list.setBounds(0, 0, 120,247);
+           sortb.setBounds(135, 10, 60, 20);
+           authorSearch.setBounds(123, 60, 100, 20);
+           searcht.setBounds(123, 80, 90, 20);
+           searchb.setBounds(130, 105, 75, 20);
+           
+           Author a1 = new Author();
+           ResultSet members = a1.viewPerson();
+           lm.removeAllElements();
+           while(members.next())
+           {
+              lm.addElement(members.getString(1));
+           }
+           thirdPanel.setLayout(null);
+           thirdPanel.add(list);
+           thirdPanel.add(sortb);
+           thirdPanel.add(authorSearch);
+           thirdPanel.add(searcht);
+           thirdPanel.add(searchb);
            
            //preparing the 3rd Panel
            backPanel.add(thirdPanel);
@@ -684,7 +825,7 @@ final int heightx =40;
            System.out.println("viewAuthor");             
         }
         
-    private class ButtonEventHandler implements ActionListener, ListSelectionListener 
+    private class ButtonEventHandler implements ActionListener, ListSelectionListener,Runnable
     {   
     public void actionPerformed(ActionEvent e)            
     {
@@ -768,7 +909,18 @@ final int heightx =40;
        else
        if(command.equals("authorSort"))
        {  
-       
+       Author a3 = new Author();
+       ResultSet authors = a3.sort();
+           try {
+               lm.removeAllElements();
+               while(authors.next())
+               {
+                   lm.addElement(authors.getString(1));                  
+               }
+               System.out.println("authorSort");
+           } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
        if(command.equals("bookSearch"))
@@ -805,32 +957,314 @@ final int heightx =40;
            }
        }
        else
-       if(command.equals("add"))
+       if(command.equals("authorSearch"))
        {  
-       
+        Author a3 = new Author();
+        ResultSet authors = a3.search(searcht.getText());
+           try 
+           {
+               lm.removeAllElements();
+               while(authors.next())
+               {
+                   lm.addElement(authors.getString(2));
+               }
+               System.out.println("authorSearch");
+            } catch (SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
-       if(command.equals("add"))
+       if(command.equals("submitBorrow"))
        {  
-       
+           bookBorrow bb3 = new bookBorrow();
+           bb3.setMemberName(namet.getText());
+           bb3.setBookName(namema.getText());
+           try {
+               bb3.addRecord();
+               System.out.println("borrowBook");
+           } catch (ClassNotFoundException | SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
        else
-       if(command.equals("add"))
+       if(command.equals("submitBookReturn"))
        {  
-       
+           
+           bookBorrow bb5 = new bookBorrow();
+           try 
+           {
+               bb5.returnBook(namet.getText(), Integer.parseInt(returnedAfter.getText()));
+           } 
+           catch (ClassNotFoundException | SQLException ex) {
+               Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
     }    
+        
         @Override
         public void valueChanged(ListSelectionEvent e) 
         {
-            if(e.getSource() == list)
+            if(e.getSource() == list && selectedValue == "book") //Use of Threadding
                 {
+                   String selectedvaluex = list.getSelectedValue().toString();
+                   returnedAuthName = new String();
+                   fourthPanel.removeAll();
+                   fourthPanel.revalidate();
+                   fourthPanel.repaint();
+                   //fourthPanel.setBackground(Color.green);
                    System.out.println(list.getSelectedValue()); 
+                   frame.setSize(770,300);
+                   
+                   //Implementing the content
+                   JLabel bookl = new JLabel("Book Details");   
+                   JLabel namel = new JLabel("Book:");
+                   JLabel genrel = new JLabel("Genre:");                   
+                   JLabel availabilityl = new JLabel("Availability:");
+                   JLabel authorl = new JLabel("Author Details");      
+                   JLabel anamel = new JLabel("Author:");      
+                   JLabel nationalityl = new JLabel("Nationality:");                       
+                                     
+                   ansnamel = new JLabel("");
+                   ansgenrel = new JLabel("");
+                   ansavailabilityl = new JLabel("");
+                   ansauthorl = new JLabel("");
+                   ansanationalityl = new JLabel("");
+
+                   
+                try 
+                {
+                    ResultSet getBookAuthor = Book.getBookDetails(selectedvaluex);
+                    while(getBookAuthor.next())
+                        {
+                           returnedAuthName = (getBookAuthor.getString(3)); 
+                        }
+                    Runnable obj1 = new ButtonEventHandler();
+                    Thread t1 = new Thread(obj1);
+                    t1.start();
+                    
+                    System.out.println(returnedAuthName);
+                } catch (ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
                 }
-             
+                                                                                       
+                   bookl.setBounds(20, 0, 100, 20);
+                   namel.setBounds(20, 20, 150, 20);
+                   ansnamel.setBounds(70, 20, 150, 20);                  
+                   genrel.setBounds(20, 40, 100, 20);
+                   ansgenrel.setBounds(70, 40, 100, 20);
+                   availabilityl.setBounds(20, 60, 100, 20);
+                   ansavailabilityl.setBounds(90, 60, 100, 20);
+                   authorl.setBounds(20, 100, 100, 20);
+                   anamel.setBounds(20, 120, 150, 20);
+                   ansauthorl.setBounds(70, 120, 150, 20);
+                   nationalityl.setBounds(20, 140, 100, 20);
+                   ansanationalityl.setBounds(90, 140, 100, 20);
+
+                   fourthPanel.setLayout(null);
+                   fourthPanel.add(bookl);
+                   fourthPanel.add(namel);                                                                                                                           
+                   fourthPanel.add(ansnamel);                                                                                                                           
+                   fourthPanel.add(genrel);                                                                                                                           
+                   fourthPanel.add(ansgenrel);                                                                                                                           
+                   fourthPanel.add(availabilityl);                                                                                                                           
+                   fourthPanel.add(ansavailabilityl);                                                                                                                           
+                   fourthPanel.add(authorl);                                                                                                                           
+                   fourthPanel.add(anamel);                                                                                                                           
+                   fourthPanel.add(ansauthorl);                                                                                                                           
+                   fourthPanel.add(nationalityl);                                                                                                                           
+                   fourthPanel.add(ansanationalityl);                                                                                                                                                                                                         
+                   backPanel.add(fourthPanel);                  
+                }  
+            else
+            if(e.getSource() == list && selectedValue == "member")
+            {     
+               System.out.println(list.getSelectedValue()); 
+               frame.setSize(770,300);
+               backPanel.add(fourthPanel);  
+               
+               String selectedvaluex = list.getSelectedValue().toString();
+                   returnedAuthName = new String();
+                   fourthPanel.removeAll();
+                   fourthPanel.revalidate();
+                   fourthPanel.repaint();
+                   //fourthPanel.setBackground(Color.green);
+                   System.out.println(list.getSelectedValue()); 
+                   frame.setSize(770,300);
+                   
+                   //Implementing the content
+                   JLabel bookl = new JLabel("Member Details");   
+                   JLabel namel = new JLabel("Name:");
+                   JLabel genrel = new JLabel("Nationality:");                   
+                   JLabel availabilityl = new JLabel("City:");
+                   JLabel authorl = new JLabel("Country:");      
+                   JLabel anamel = new JLabel("Contact:");      
+                                                          
+                   ansnamel = new JLabel("");
+                   ansgenrel = new JLabel("");
+                   ansavailabilityl = new JLabel("");
+                   ansauthorl = new JLabel("");
+                   ansanationalityl = new JLabel("");
+                
+                try 
+                {
+                    Member mm5 = new Member();
+                    ResultSet getmemberd = mm5.viewPersonDetails(selectedvaluex);
+                    while(getmemberd.next())
+                        {
+                            ansnamel.setText(getmemberd.getString(2));
+                            ansgenrel.setText(getmemberd.getString(3));
+                            ansavailabilityl.setText(getmemberd.getString(4));
+                            ansauthorl.setText(getmemberd.getString(5));
+                            ansanationalityl.setText(getmemberd.getString(6));
+                            System.out.println("Values?"); 
+                        }                    
+                    System.out.println(returnedAuthName);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                                                                                       
+                   bookl.setBounds(20, 0, 100, 20);
+                   namel.setBounds(20, 20, 150, 20);
+                   ansnamel.setBounds(70, 20, 150, 20);                  
+                   genrel.setBounds(20, 40, 100, 20);
+                   ansgenrel.setBounds(90, 40, 100, 20);
+                   availabilityl.setBounds(20, 60, 100, 20);
+                   ansavailabilityl.setBounds(50, 60, 100, 20);
+                   authorl.setBounds(20, 80, 100, 20);
+                   ansauthorl.setBounds(70, 80, 150, 20);
+                   anamel.setBounds(20, 100, 150, 20);                  
+                   ansanationalityl.setBounds(70, 100, 100, 20);
+
+                   fourthPanel.setLayout(null);
+                   fourthPanel.add(bookl);
+                   fourthPanel.add(namel);                                                                                                                           
+                   fourthPanel.add(ansnamel);                                                                                                                           
+                   fourthPanel.add(genrel);                                                                                                                           
+                   fourthPanel.add(ansgenrel);                                                                                                                           
+                   fourthPanel.add(availabilityl);                                                                                                                           
+                   fourthPanel.add(ansavailabilityl);                                                                                                                           
+                   fourthPanel.add(authorl);                                                                                                                           
+                   fourthPanel.add(anamel);                                                                                                                           
+                   fourthPanel.add(ansauthorl);                                                                                                                                                                                                                                                   
+                   fourthPanel.add(ansanationalityl);                                                                                                                                                                                                         
+                   backPanel.add(fourthPanel);     
+                                                                    
+            }  
+            else
+            if(e.getSource() == list && selectedValue == "author")
+                {
+                  System.out.println(list.getSelectedValue()); 
+               frame.setSize(770,300);
+               backPanel.add(fourthPanel);  
+               
+               String selectedvaluex = list.getSelectedValue().toString();
+                   returnedAuthName = new String();
+                   fourthPanel.removeAll();
+                   fourthPanel.revalidate();
+                   fourthPanel.repaint();
+                   //fourthPanel.setBackground(Color.green);
+                   System.out.println(list.getSelectedValue()); 
+                   frame.setSize(770,300);
+                   
+                   //Implementing the content
+                   JLabel bookl = new JLabel("Author Details");   
+                   JLabel namel = new JLabel("Name:");
+                   JLabel genrel = new JLabel("Nationality:");                   
+                   JLabel availabilityl = new JLabel("City:");
+                   JLabel authorl = new JLabel("Country:");      
+                   JLabel anamel = new JLabel("Contact:");      
+                                                          
+                   ansnamel = new JLabel("");
+                   ansgenrel = new JLabel("");
+                   ansavailabilityl = new JLabel("");
+                   ansauthorl = new JLabel("");
+                   ansanationalityl = new JLabel("");
+                
+                try 
+                {
+                    Author aa5 = new Author();
+                    ResultSet getauthord = aa5.viewPersonDetails(selectedvaluex);
+                    while(getauthord.next())
+                        {
+                            ansnamel.setText(getauthord.getString(2));
+                            ansgenrel.setText(getauthord.getString(3));
+                            ansavailabilityl.setText(getauthord.getString(4));
+                            ansauthorl.setText(getauthord.getString(5));
+                            ansanationalityl.setText(getauthord.getString(6));
+                            System.out.println("Values?"); 
+                        }                    
+                    System.out.println(returnedAuthName);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                                                                                       
+                   bookl.setBounds(20, 0, 100, 20);
+                   namel.setBounds(20, 20, 150, 20);
+                   ansnamel.setBounds(70, 20, 150, 20);                  
+                   genrel.setBounds(20, 40, 100, 20);
+                   ansgenrel.setBounds(90, 40, 100, 20);
+                   availabilityl.setBounds(20, 60, 100, 20);
+                   ansavailabilityl.setBounds(50, 60, 100, 20);
+                   authorl.setBounds(20, 80, 100, 20);
+                   ansauthorl.setBounds(70, 80, 150, 20);
+                   anamel.setBounds(20, 100, 150, 20);                  
+                   ansanationalityl.setBounds(70, 100, 100, 20);
+
+                   fourthPanel.setLayout(null);
+                   fourthPanel.add(bookl);
+                   fourthPanel.add(namel);                                                                                                                           
+                   fourthPanel.add(ansnamel);                                                                                                                           
+                   fourthPanel.add(genrel);                                                                                                                           
+                   fourthPanel.add(ansgenrel);                                                                                                                           
+                   fourthPanel.add(availabilityl);                                                                                                                           
+                   fourthPanel.add(ansavailabilityl);                                                                                                                           
+                   fourthPanel.add(authorl);                                                                                                                           
+                   fourthPanel.add(anamel);                                                                                                                           
+                   fourthPanel.add(ansauthorl);                                                                                                                                                                                                                                                   
+                   fourthPanel.add(ansanationalityl);                                                                                                                                                                                                         
+                   backPanel.add(fourthPanel);                       
+                }      
             
+        }
+
+        @Override
+        public void run() 
+        {
+        System.out.println("THIS IS THREAD");
+        try 
+        {
+            ResultSet bookviews = Book.getBookDetails(returnedAuthName);
+            
+            while(bookviews.next())
+                {
+                    ansnamel.setText(bookviews.getString(1));
+                    ansgenrel.setText(bookviews.getString(4));
+                    ansavailabilityl.setText(bookviews.getString(5));
+                    System.out.println("Values?");
+                }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            Author av3 = new Author();
+            ResultSet authorviews = av3.viewPersonDetails(returnedAuthName);
+                    
+        try {
+            while(authorviews.next())
+            {
+                ansauthorl.setText(authorviews.getString(2));
+                ansanationalityl.setText(authorviews.getString(3));
+                System.out.println("Values?");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectConverter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                    
         }
    }
   }
 }
 
+//Comments will be added later for the presentation time.
